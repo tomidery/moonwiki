@@ -1,0 +1,18 @@
+---+ Introduction
+MoonWiki is simple HTTP server with build in wiki engine. It is simple to install and simple to use. It cannot serve thousands of pages but it could be used as personal wiki for notes and memos.
+
+Wiki operates like a normal website.  However, you can edit any page you like as you browse the site.  This makes wiki a simple but powerful hypertext system. Every page is created from a plain text file, then headers are added and the page is sent to the user.  Text formatting (*bold*, _italic_, =monospace=, etc.) is entered using simple commands in the text file.  Links are implicitly made whenever WikiWord is entered. WikiSyntax page gives you quick guide how to format text.
+
+There are many [[http://c2.com/cgi/wiki?WikiEngines][wiki engines]] and each uses slighty different formatting commands. MoonWiki uses [[http://www.twiki.org][TWiki]]-like syntax. See TextFormattingRules for details.
+
+---+ Other pages
+   * CompilationAndInstallation - how to build this tool.
+   * RunningAndConfiguration is a short help page.
+   * SpecialPages explains build in pages with special features.
+   * TextFormattingRules and WikiSyntax explains how to format text.
+   * MoonWikiHistory gives your some information about project roots.
+   * MileStones. You can also check what I would like ToDo.   
+   * During development I used some AdditionalTools.
+
+---+ Contact
+Send your comments, questions, and bug reports to Piotr Kaminski ( =pitek@users.sourceforge.net= ) and have fun using MoonWiki.

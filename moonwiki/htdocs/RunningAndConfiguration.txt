@@ -1,0 +1,36 @@
+*TODO:* update this information
+
+The header contains the Wiki icon and the page title.  Clicking on the Wiki icon always takes you back to StartPage.  Clicking on the page title gives you a list of all the pages that link to this one.
+
+The footer contains a link allowing you to edit the page.  Clicking this link will give you a simple edit form, allowing you to edit the plain text file corresponding to the page, and then save it back to the server.
+t pioneers.
+
+
+Specifically, it opens a TCP/IP port so the outside world can access the program, then responds to HTTP requests (from a web browser) to supply the appropriate data in return - usually HTML files for display in the browser.
+
+---+ Configuration
+'''Server Location'''
+
+WikiServer must be started in a server directory.  This directory must contain a Pages subdirectory which contains '''Icon.gif''' (the Wiki icon) and (optionally) any existing Wiki pages (=*.txt=).
+
+This can be acheived by either copying WikiServer into the directory and running it there, or else by creating a shortcut which specifies the appropriate directory.
+
+Using a shortcut, you can also specify server options.
+
+----
+
+'''Server Options'''
+
+The server accepts some options on the command-line when it is first run:
+
+> Server Port
+
+>> You can run more than one WikiServer on a machine, provided they all use different ports.  To specify which port Wiki uses, use the option '''-p<port>''' where <port> is the TCP/IP port number from 0 to 65535.  If this option is not specified, port 80 (the standard HTTP port) is the default.  This gives the server the simple URL http://localhost, whereas -p<port> gives a URL of http://localhost:<port>.
+
+> Console / logging
+
+>> By default, the WikiServer opens a console windows and logs output to that.  You can specify a logfile using the option '''-l<logfile>'''.
+
+>> Usually the logfile is opened in "append" mode, so the previous contents are kept.  If you specify '''-c''' on the command-line, the logfile is opened in "write" mode and cleared.
+
+

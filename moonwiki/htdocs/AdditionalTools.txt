@@ -1,0 +1,23 @@
+---+ Additional tools
+---++ Documentation generators
+Documentation for C source code could be generated using [[http://www.doxygen.org][Doxygen]]. Because MoonWiki has only one C source file it might appear strange to use such big tool as Doxygen. But if you want you could use it. Comments in source code use <nop>JavaDoc conventions.
+
+Documentation for Lua source code could be generated using [[http://www.tecgraf.puc-rio.br/~tomas/luadoc][LuaDoc]]. Unfortunately original version of this tool does not support Lua 5.0, it requires 4.0. I ported <nop>LuaDoc to 5.0 version. If you want to use it you can find it in CVS module called =luadoc=.
+
+---++ Libraries
+MoonWiki use [[http://www.tecgraf.puc-rio.br/~tomas/htk/][HTK]] library to generate HTML pages. Because it is only one =htk.lua= file it is directly included in source tree under =script= directory.
+
+I am Java developer and I used to program using OO methodology. Lua has no direct support for creaing objects nor classes but it could be easly implemented:
+   * http://christophe.delord.free.fr/en/lua/
+   * http://www1.pacific.edu/~twrensch/lua/
+   * http://lua-users.org/wiki/ObjectOrientationTutorial
+   * http://lua-users.org/wiki/SimpleLuaClasses
+   * http://www.st.cs.uni-sb.de/~lindig/src/lua-oo/oo.html
+   * _Programming in Lua_ book - http://www.lua.org/pil/16.html
+I have browsed those pages but as time on my investigation none of them fulfils my requirements. So I implemented my own object oriented extension. Its code is in =Object.lua= file under =script= directory. I took ideas from all those pages and made my _object system_ similar to Java one. ObjectOrientedLua page contains more information about this.
+
+---++ Future
+Sockets communication and filesystem access functions are currently implemented in =MoonWiki.c= file. It supports only _Microsoft Windows_ system. I think about porting those functions to Unix/Linux systems. Another option is using [[http://www.cs.princeton.edu/~diego/professional/luasocket/old/luasocket-1.4/home.html][LuaSockets]] library (the whole one or only some parts of it). Now its version for Lua 5.0 is still in _alfa_ stage. 
+
+Also using of [[http://luacheia.lua-users.org/][LuaCheia]] might be interesting option. But when I started MoonWiki implementation I did not want to make it too heavy and use to many additional libraries.
+

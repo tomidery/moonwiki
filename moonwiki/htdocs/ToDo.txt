@@ -1,0 +1,23 @@
+---+ What I want to do
+There are still many things unfinished, many bugs unknown and many features waiting to be implemented. There are project MileStones defined.  Beside that here is a list of planned improvements:
+   * Searching needs to be implemented.
+   * It would be nice to have ability to define variables such as =%NAME%= in TWiki. For simplicity they could be defined in Lua table in =config.lua= file.
+   * Support for renaming pages - also all backlinks in other pages should be renamed.
+   * Fix problems with plural pages' names
+
+---+ Incompatibilities to TWiki syntax
+There are some shortcomings in MoonWiki when compared to TWiki syntax. I think it's OK for such small wiki engine:
+   * WikiWord and WikiWord#WikiAnchor work, but [[WikiWord]] and [[WikiWord#WikiAnchor]] syntax doesn't work - it is OK because there is no need to force link - without =[[= and =]]= those links still work.
+   * What about TWiki _webs_? Maybe it is to _big_ feature for such simple tool.
+   * =---+!!= is not handled yet
+
+---+ Web site
+   * Export Wiki pages to HTML files and put them on [[http://www.sourceforge.net][SourceForge]]
+   * Create mechanism for automaticaly updates of web site - check out HTML pages from CVS =htdocs= module
+
+---+ Documentation
+Pages to update:
+   * RunningAndConfiguration
+   * ObjectOrientedLua
+   * MoonWikiHistory
+   

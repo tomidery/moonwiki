@@ -1,0 +1,31 @@
+---+ Project milestones
+See also ToDo page.
+
+---++ Version 0.1
+   * Basic functionality
+   * Editing of pages
+   * IndexPage
+
+---++ Version 0.2
+   * CSS added
+   * Printable pages view
+   * RecentChanges
+   * SearchPage 
+   * Exporting pages to HTML files
+
+---++ Version 0.3
+   * Icons handling (pictures from standard TWiki distribution)
+   * TWiki like variables =%NAME%= (static ones)
+   * CSS improvement
+   * TWiki syntax improvement (eg. ---+!!)
+
+---++ Version 0.4
+   * "Dynamic" variables, eg. =%TOC%= - making _Table of contents_
+   * Renaming and deleting pages
+
+---++ Version 0.5
+   * Images handling
+   * Attachements handling
+
+---++ Version 1.0
+   * Webs - feature from TWiki

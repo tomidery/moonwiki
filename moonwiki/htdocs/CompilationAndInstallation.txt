@@ -1,0 +1,45 @@
+---+ Compilation
+
+To build MoonWiki you only need C compiler. It was compiled using _MinGW_ (http://www.mingw.org) but probably any other C compiler would work.
+  
+---++ Using build.bat
+Building MoonWiki is simple:
+   * first compile _Lua 5.0_:
+      * modify =moonwiki/lua-5.0/build.bat= file, especially =MINGW_HOME= variable
+      * run =build.bat=, it compiles _Lua 5.0_
+      * if you can see _Hello world, from Lua 5.0!_ your build is successful
+   * then compile MoonWiki itself 
+      * modify =moonwiki/build.bat= file, especially =MINGW_HOME= variable
+      * run =build.bat=, it compiles MoonWiki
+      * the result is executable file =moonwiki/MoonWiki.exe= 
+
+---++ Using make tool
+You can also use _make_, but you also must have some unix shell support. 
+_Cygwin_ (http://www.cygwin.com) bash shell is good tool for this purpose.
+To build MoonWiki using _make_:
+   * modify =moonwiki/lua-5.0/config= file
+   * modify =moonwiki/Makefile= file
+   * run =make lua= and then =make=
+ 
+---+ Installation
+
+If you want to install MoonWiki you have to create simple directories structure:
+<verbatim>
+ ... install directory 
+   +- MoonWiki.exe                 - executable program
+   +- script                       - all lua files
+   |  +- config.lua               
+   |  |  ...
+   |  `- WikiStore.lua
+   `- htdocs                       - wiki pages and other files
+      +- StartPage.txt             - initial page
+      +- moon.jpg                  - logo
+      |  ...
+      `- other pages
+</verbatim>
+      
+I use MoonWiki installed on USB flash drive to store and edit some notes and memos.  
+  
+---+ Running
+After succesfull installation you can run MoonWiki simple executing =MoonWiki.exe= program. See also RunningAndConfiguration.
+

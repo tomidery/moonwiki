@@ -1,0 +1,82 @@
+MOONWIKI version 0.1
+--------------------
+
+* Introduction
+  ------------
+   
+MoonWiki is simple HTTP server with build in wiki engine.
+It is simple to install and use. MoonWiki uses TWiki-like
+syntax (http://www.twiki.org). 
+
+MoonWiki is written in C and Lua (http://www.lua.org).
+C is used to handle communication using sockets. Lua is used for 
+the rest: HTTP request parsing and processing, files reading,
+converting wiki syntax to HTML, even command line arguments parsing.
+Lua 5.0 interpreter is embedded into application.
+
+For now it runs under Microsoft Windows but it shouldn't be
+difficult to port it to other platform (e.g. Linux). Only C part
+have to be ported.
+
+* License
+  -------
+
+MoonWiki is licensed under the terms of the MIT license. Just like 
+Lua language itself. Please see LICENSE file for details.
+
+* Building
+  --------
+
+You only need C compiler. MoonWiki was compiled using MinGW (http://www.mingw.org).
+  
+Building MoonWiki is simple:
+   * first compile Lua 5.0:
+      * modify moonwiki/lua-5.0/build.bat file, especially MINGW_HOME variable
+      * run build.bat, it compiles Lua 5.0
+      * if you can see "Hello world, from Lua 5.0!" your build is successful
+   * then compile MoonWiki itself 
+      * modify moonwiki/build.bat file, especially MINGW_HOME variable
+      * run build.bat, it compiles MoonWiki
+      * the result is executable file moonwiki/MoonWiki.exe 
+
+You can also use 'make', but you also must have some unix shell support. 
+Cygwin (http://www.cygwin.com) bash shell is good tool for this purpose.
+To build MoonWiki using 'make':
+   * modify moonwiki/lua-5.0/config file
+   * modify moonwiki/Makefile file
+   * run 'make lua' and then 'make'
+ 
+* Installation
+  ------------
+
+If you want to install MoonWiki you have to create simple directories structure:
+
+ ... install directory 
+   +- MoonWiki.exe                 - executable program
+   +- script                       - all lua files
+   |  +- config.lua               
+   |  |  ...
+   |  `- WikiStore.lua
+   `- htdocs                       - wiki pages and other files
+      +- StartPage.txt             - initial page
+      +- moon.jpg                  - logo
+      |  ...
+      `- other pages
+      
+I use MoonWiki installed on USB flash drive to store and edit some notes and memos.  
+  
+* Running
+  -------
+  
+Simple execute MoonWiki.exe program. It starts the web server on localhost. 
+Default port is 80, configuration could be changed in script/config.lua file.
+Then type URL: http://localhost in your web browser. That's all.
+To stop web server just terminate MoonWiki.exe process.
+  
+* Contact
+  -------
+  
+Send your comments, questions, and bug reports to pitek@users.sourceforge.net
+and have fun using MoonWiki.
+
+Piotr Kaminski
