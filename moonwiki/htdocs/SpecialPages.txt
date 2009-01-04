@@ -1,26 +1,11 @@
-
-----
-
-MoonWiki uses a few SpecialPages in its operation. They are not not true pages (there are no =.txt= files for them) but they are build in wiki engine and give additional information back.
-
- EditPage?page=<page>
- EditPage?page=<page>&rows=<rows>&cols=<cols>
-
-> This returns an edit page for the specified page.  You can optionally specify the size of the text area, which defaults to 80 x 18 characters.
-
- DumpAllPages
-
-> This returns a binary file containing all the pages on the WikiServer.  If you place this file into the root server directory and then restart the WikiServer, the pages will be added to the current set of pages.  ''Note: pages are always overwritten, regardless of age''
-
- ListAllPages
-
-> This returns a page containing a link to every single page in the WikiServer.
-
- RecentChanges
-
-> This returns a page containing a list of the most recently-edited pages (for the last 7 days, although these do not have to be 7 ''consecutive'' days)
-
- ReverseLink?page=<page>
-
-> This returns a list of all the pages which link to the specified page.  Note that the list of links is cached when the server starts and automatically kept up to date, so doing a reverse link search involves only memory operations.
-
+MoonWiki uses a few SpecialPages in its operation. They are not not true pages (there are no =.txt= files for them) but they are build in wiki engine and give additional information back.
+
+ * EditPage?page=PageName
+  * This returns an edit page for the specified page.
+ * IndexPage
+  * This returns a page containing a link to every single page in the MoonWiki server.
+ * RecentChanges
+  * This returns a page containing a list of the most recently-edited pages (for the last 7 days, although these do not have to be 7 ''consecutive'' days)
+ * ReverseLink?page=PageName
+  * This returns a list of all the pages which link to the specified page.  Note that the list of links is cached when the server starts and automatically kept up to date, so doing a reverse link search involves only memory operations.
+

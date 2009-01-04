@@ -18,7 +18,8 @@ serverConfig = {
     -- export to HTML options
     exportSuffix = ".html", -- suffix of exported pages
     exportDir = nil,        -- if it is set then all pages are exported as HTML files
-    exportReverseLink = false -- whether reverse links pages should be created 
+    exportReverseLink = false, -- whether reverse links pages should be created 
+    charset = "iso-8859-2"  -- or windows-1250 or nil
 }
 
 --- Definition of content types supported by MoonWiki.

@@ -163,7 +163,7 @@ function HttpServer.methods:parseHttpRequest()
     end    
     self.request.url = string.gsub(self.request.uri,"(%?.*)", function(parameters)
         string.gsub(parameters,"([^=?&;]+)=([^;&%s]*)", function(field, value)
-	    self.request.parameters[string.lower(field)] = self:unescapeHttp(value)
+	        self.request.parameters[string.lower(field)] = self:unescapeHttp(value)
         end)    
     end)
     string.gsub(self.request.header,"([%a-_]+)%s*:%s*([^\r\n]+)", function(field,value)
@@ -227,9 +227,12 @@ function HttpServer.methods:getCSS()
 end
 
 function HttpServer.methods:createHtmlHeader(title)
+    contentType = "text/html"
+    if (serverConfig.charset ~= nil) then
+        contentType = contentType .. "; charset=" .. serverConfig.charset 
+    end
     local header = HTK.HEAD {HTK.TITLE {title},
---        '<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">'        
-        '<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1250">',        
+        '<META HTTP-EQUIV="Content-Type" CONTENT="' .. contentType ..'">',               
         self:getCSS()
     }
     return header
