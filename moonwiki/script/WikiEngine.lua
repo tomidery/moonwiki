@@ -60,19 +60,15 @@ function WikiEngine.methods:processRequest()
         page = self:processSpecialPage(url)
     elseif self.store:topicExists(url) then
         -- process wiki page            
-        page = self:processWikiPage(url, self.store:loadPage(url))                       
+        local content =  self.store:loadPage(url)
+        page = self:createHtmlPage(url, self.formatter:wikiPageTemplate(url, content))          
     else 
         -- page not found
-        --print("NOT FOUND")
-        page = self:createNotFoundPage(url)
+        page = self:createHtmlPage("Not found " .. url, self.formatter:notFoundPageTemplate(url)) 
     end
     return page
 end    
 
-
-function WikiEngine.methods:processWikiPage(title, content)    
-    return self:createHtmlPage(title, self.formatter:wikiPageTemplate(title, content)) 
-end
 
 function WikiEngine.methods:createHtmlPage(title, body)
     return HTK.HTML {
@@ -94,21 +90,6 @@ function WikiEngine.methods:getNameWithoutSuffix(fileName)
     return capture
 end
 
-function WikiEngine.methods:createNotFoundPage(title)
-    local formatted =
-        HTK.HTML {self:createHtmlHeader("Not found " .. title),
-            HTK.BODY {
-                self.formatter:specialPageHeader(title),
-                HTK.P {
-                    "The specifed page was not found.", HTK.BR {},
-                    "Try to find it using:&nbsp;" ,HTK.A { href = "SearchPage", "Search" }, 
-                    "&nbsp;or&nbsp;", HTK.A { href = "IndexPage", "Index page" }, ".", HTK.BR {},
-                    "You can also create new page:&nbsp;" , HTK.A { href = "EditPage?page=" .. title, title }, "."
-                } 
-            } 
-        }
-    return formatted
-end
 
 function WikiEngine.methods:getCSS()
     return [[

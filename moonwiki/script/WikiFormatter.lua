@@ -106,6 +106,21 @@ end
 
 
 ---
+-- template for regular not found wiki page
+function WikiFormatter.methods:notFoundPageTemplate(title)
+    return HTK.BODY {
+                self:specialPageHeader(title),
+                HTK.P {
+                    "The specifed page was not found.", HTK.BR {},
+                    "Try to find it using:&nbsp;" , self:existentPageLink("SearchPage", "Search") , 
+                    "&nbsp;or&nbsp;", self:existentPageLink("IndexPage", "Index page"), ".", HTK.BR {},
+                    "You can also create new page:&nbsp;" , self:existentPageLink("EditPage?page=" .. title, title), "."
+                } 
+            } 
+end
+
+
+---
 -- template for special page: IndexPage
 function WikiFormatter.methods:specialIndexPageTemplate(pages)
     local list = ""
