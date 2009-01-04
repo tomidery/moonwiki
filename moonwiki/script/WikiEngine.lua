@@ -71,16 +71,15 @@ end
 
 
 function WikiEngine.methods:processWikiPage(title, content)    
-    local formatted =
-        HTK.HTML {self:createHtmlHeader(title),
-            HTK.BODY {
-                self.formatter:standardPageHeader(title),
-                self.formatter:formatWikiPage(content)
-            } 
-        }
-    return formatted
+    return self:createHtmlPage(title, self.formatter:wikiPageTemplate(title, content)) 
 end
 
+function WikiEngine.methods:createHtmlPage(title, body)
+    return HTK.HTML {
+            self:createHtmlHeader(title),
+            body 
+        }
+end
 
 function WikiEngine.methods:isValidPage(title)
     if title == nil then
@@ -186,12 +185,7 @@ function WikiEngine.methods:createSpecialIndexPage(title)
     end    
     -- sort alphabeticaly by page name
     table.sort(pages)
-    local formatted =
-        HTK.HTML {
-            self:createHtmlHeader("Index page"), 
-            self.formatter:specialIndexPageTemplate(pages)
-        }
-    return formatted
+    return self:createHtmlPage("Index page", self.formatter:specialIndexPageTemplate(pages))
 end
 
 -- displays index page with names of all pages which was modified 
@@ -214,13 +208,8 @@ function WikiEngine.methods:createSpecialRecentChanges(title)
         if i == serverConfig.recentChangesListSize then
             break
         end
-    end
-    local formatted =
-        HTK.HTML {
-            self:createHtmlHeader("Recent changes"),
-            self.formatter:specialRecentChangesTemplate(pages)
-        }
-    return formatted
+    end    
+    return self:createHtmlPage("Recent changes", self.formatter:specialRecentChangesTemplate(pages))    
 end
 
 function WikiEngine.methods:createSpecialSearchPage(title)    
@@ -296,13 +285,8 @@ function WikiEngine.methods:createSpecialReverseLink(title)
     table.sort(pages)
     if table.getn(pages) == 0 then
         pages = nil
-    end
-    local formatted =
-        HTK.HTML {
-            self:createHtmlHeader("Reverse links for " .. pageName),
-            self.formatter:specialReverseLinkTemplate(pageName, pages)
-        }
-    return formatted    
+    end   
+    return self:createHtmlPage("Reverse links for " .. pageName, self.formatter:specialReverseLinkTemplate(pageName, pages))       
 end
 
 

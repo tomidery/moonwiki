@@ -96,6 +96,16 @@ function WikiFormatter.methods:pageHeaderTable(title, actions, isSpecial)
 end
 
 ---
+-- template for regular wiki page
+function WikiFormatter.methods:wikiPageTemplate(title, content)
+    return HTK.BODY {
+                self:standardPageHeader(title),
+                self:formatWikiPage(content)
+            } 
+end
+
+
+---
 -- template for special page: IndexPage
 function WikiFormatter.methods:specialIndexPageTemplate(pages)
     local list = ""
