@@ -177,7 +177,7 @@ function WikiEngine.methods:createSpecialEditPage(title)
                         self.formatter:pageHeaderTable(pageName, actions),
                         HTK.BLOCKQUOTE {
                             HTK.TEXTAREA {
-                                name="text", wrap="virtual",
+                                name="text", wrap="virtual", rows="30", 
                                 content
                             }
                         },
@@ -191,54 +191,50 @@ end
 
 -- displays index page with names of all pages
 function WikiEngine.methods:createSpecialIndexPage(title)
-    files = {findMatchingFiles(serverConfig.rootDir .. "/*" .. serverConfig.suffix)}
-    table.sort(files)
-    local list = ""
-    for file in files do
-        local pageTitle = self:getNameWithoutSuffix(files[file])
+    local files = {findFiles(serverConfig.rootDir .. "/*" .. serverConfig.suffix)}    
+    local pages = {}
+    for i, file in ipairs(files) do 
+        local filedate, name = next(file)
+        local pageTitle = self:getNameWithoutSuffix(name)
         if self.formatter:isValidTitle(pageTitle) then
-            list = list .. HTK.LI { self.formatter:internalLink(pageTitle, nil, pageTitle) } .. "\n"
+            table.insert(pages, pageTitle)
         end
-    end
+    end    
+    -- sort alphabeticaly by page name
+    table.sort(pages)
     local formatted =
-        HTK.HTML {self:createHtmlHeader("Index page"),
-            HTK.BODY {
-                self.formatter:specialPageHeader("Index page") ,    
-                HTK.P {"The following is a complete list of pages on this server:"},
-                HTK.UL {list}
-            } 
+        HTK.HTML {
+            self:createHtmlHeader("Index page"), 
+            self.formatter:specialIndexPageTemplate(pages)
         }
     return formatted
 end
 
 -- displays index page with names of all pages which was modified 
 function WikiEngine.methods:createSpecialRecentChanges(title)
-    files = {findRecentFiles(serverConfig.rootDir .. "/*" .. serverConfig.suffix)}    
-    sorter = function(tab1, tab2) 
-        k1, v1 = next(tab1)
-        k2, v2 = next(tab2)
-        return k1>k2
-    end   
-    table.sort(files, sorter)
+    local files = {findFiles(serverConfig.rootDir .. "/*" .. serverConfig.suffix)}    
+    -- sort by file date in reverse order    
+    table.sort(files, function(tab1, tab2) 
+        date1, name1 = next(tab1)
+        date2, name2 = next(tab2)
+        return date1>date2
+    end)   
     
-    local list = ""
+    local pages = {}
     for i, file in ipairs(files) do 
-        filedate, name = next(file)
+        local filedate, name = next(file)
         local pageTitle = self:getNameWithoutSuffix(name)
         if self.formatter:isValidTitle(pageTitle) then
-            list = list .. HTK.LI { HTK.B {filedate}, " - ", self.formatter:internalLink(pageTitle, nil, pageTitle) } .. "\n"
+            table.insert(pages, {filedate,pageTitle})
         end
         if i == serverConfig.recentChangesListSize then
             break
         end
     end
     local formatted =
-        HTK.HTML {self:createHtmlHeader("Recent changes"),
-            HTK.BODY {
-                self.formatter:specialPageHeader("Recent changes") ,    
-                HTK.P {"The following is a complete list of pages on this server:"},
-                HTK.UL {list}
-            } 
+        HTK.HTML {
+            self:createHtmlHeader("Recent changes"),
+            self.formatter:specialRecentChangesTemplate(pages)
         }
     return formatted
 end
@@ -298,35 +294,29 @@ function WikiEngine.methods:createSpecialReverseLink(title)
         self.response.status = 404
         return nil
     end
-    files = {findMatchingFiles(serverConfig.rootDir .. "/*" .. serverConfig.suffix)}
-    local titles = {}
+    files = {findFiles(serverConfig.rootDir .. "/*" .. serverConfig.suffix)} 
+    local pages = {}
     local pattern = "[^%w]" .. pageName .. "[^%w]"
-    for file in files do
-        local pageTitle = self:getNameWithoutSuffix(files[file])
+    for i, file in ipairs(files) do 
+        local filedate, name = next(file)
+        local pageTitle = self:getNameWithoutSuffix(name)
         local content = self.store:loadPage(pageTitle)
         if content ~= nil then
             local beginPos, endPos = string.find(content, pattern)
             if beginPos ~= nil then
-                table.insert(titles, pageTitle)
+                table.insert(pages, pageTitle)
             end        
         end        
     end
-    local message = HTK.P { "There are no pages with links to this page." }
-    if table.getn(titles) ~= 0 then
-        table.sort(titles)
-        local list = ""
-        for item in titles do
-            list = list .. HTK.LI { self.formatter:internalLink(titles[item], nil, titles[item]) } .. "\n"                            
-        end
-        message = HTK.P {"The following is a complete list of pages with links to this page:"} ..
-            HTK.UL {list}
+     -- sort alphabeticaly by page name
+    table.sort(pages)
+    if table.getn(pages) == 0 then
+        pages = nil
     end
     local formatted =
-        HTK.HTML {self:createHtmlHeader("Reverse links for " .. pageName),
-            HTK.BODY {
-                self.formatter:specialPageHeader(title) ,    
-                message
-            } 
+        HTK.HTML {
+            self:createHtmlHeader("Reverse links for " .. pageName),
+            self.formatter:specialReverseLinkTemplate(pageName, pages)
         }
     return formatted    
 end

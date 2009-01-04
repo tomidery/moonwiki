@@ -209,25 +209,7 @@ static void runServer() {
 /**
  * Function called from Lua code.
  */
-static int findMatchingFiles(lua_State *L) {
-    int quantity = 0;
-    const char* path = lua_tostring(L, 1);
-    WIN32_FIND_DATA fdata;
-    HANDLE hnd = FindFirstFile(path, &fdata);
-    if (hnd == INVALID_HANDLE_VALUE) {
-        return 0;
-    } 
-    do {
-        lua_pushstring(L, fdata.cFileName);
-        quantity++;    
-    } while (FindNextFile(hnd, &fdata));
-    return quantity;
-}
-
-/**
- * Function called from Lua code.
- */
-static int findRecentFiles(lua_State *L) {
+static int findFiles(lua_State *L) {
     int quantity = 0;
     const char* path = lua_tostring(L, 1);
     WIN32_FIND_DATA fdata;
@@ -333,8 +315,7 @@ static void initLua() {
     luaopen_math(L);
     luaopen_table(L);
     // register C functions
-    lua_register(L,"findMatchingFiles",findMatchingFiles);
-    lua_register(L,"findRecentFiles",findRecentFiles);
+    lua_register(L,"findFiles",findFiles);
     lua_register(L,"readFromSocket",readFromSocket);
     lua_register(L,"copyFile",copyFile);
     // load code files

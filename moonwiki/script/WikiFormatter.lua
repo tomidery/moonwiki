@@ -46,7 +46,7 @@ end
 
 
 ---
--- page header generation functions    
+-- page templates
 function WikiFormatter.methods:pageHeaderTemplate(title, additions)
     local header =
         HTK.TABLE {
@@ -60,13 +60,12 @@ function WikiFormatter.methods:pageHeaderTemplate(title, additions)
                     align = "center",
                     valign = "bottom",
                     width = "0%", 
-                    HTK.A { 
-                        href = "StartPage", 
+                    self:existentPageLink("StartPage", 
                         HTK.IMG { 
                             border = 0,
                             src = serverConfig.logoFile
                         }
-                    } 
+                    )
                 },
                 HTK.TD { 
                     rowspan = 2,
@@ -87,20 +86,75 @@ function WikiFormatter.methods:pageHeaderTemplate(title, additions)
     return header   
 end
 
+
 function WikiFormatter.methods:pageHeaderTable(title, actions, isSpecial)
     if isSpecial then
         return self:pageHeaderTemplate(title, actions)
     else
-        return self:pageHeaderTemplate(HTK.A { href = "ReverseLink?page=" .. title, title }, actions)
+        return self:pageHeaderTemplate(self:reversePageLink(title), actions)
     end
 end
 
+---
+-- template for special page: IndexPage
+function WikiFormatter.methods:specialIndexPageTemplate(pages)
+    local list = ""
+    for i, pageTitle in ipairs(pages) do
+        list = list .. HTK.LI { self:internalLink(pageTitle, nil, pageTitle) } .. "\n"
+    end 
+    return HTK.BODY {
+        self:specialPageHeader("Index page") ,    
+        HTK.P {"The following is a complete list of pages on this server:"},
+        HTK.UL {list}
+    } 
+end
+
+            
+---
+-- template for special page: RecentChanges
+function WikiFormatter.methods:specialRecentChangesTemplate(pages)
+    local list = ""
+    for i, page in ipairs(pages) do
+        local filedate = page[1]
+        local pageTitle = page[2]
+        list = list .. HTK.LI { HTK.B {filedate}, " - ", self:internalLink(pageTitle, nil, pageTitle) } .. "\n"
+    end 
+    return HTK.BODY {
+        self:specialPageHeader("Recent changes") ,    
+        HTK.P {"The following is a list of recently changed pages on this server:"},
+        HTK.UL {list}
+    } 
+end
+
+
+---
+-- template for special page: ReverseLink
+function WikiFormatter.methods:specialReverseLinkTemplate(pageName, pages)
+    if pages ~= nil then
+        message = "The following is a complete list of pages with links to " .. self:internalLink(pageName, nil, pageName) .. " page:"
+        list = ""
+        for i, pageTitle in ipairs(pages) do
+            list = list .. HTK.LI { self:internalLink(pageTitle, nil, pageTitle) } .. "\n"                            
+        end 
+    else
+        message = "There are no pages with links to " .. self:internalLink(pageName, nil, pageName) .. " page."     
+        list = nil
+    end
+    return HTK.BODY {
+        self:specialPageHeader("Reverse links for " .. pageName) ,    
+        HTK.P {message},
+        HTK.UL {list}
+    } 
+end
+
+---
+-- functions for creating page headers
 function WikiFormatter.methods:specialPageHeader(title)
     local actions = HTK.P {
         wiki.menuStart,        
-        HTK.A { href = "SearchPage", "Search" }, wiki.menuSeparator,
-        HTK.A { href = "IndexPage", "Index page" }, wiki.menuSeparator,
-        HTK.A { href = "RecentChanges", "Recent changes" },
+        self:existentPageLink("SearchPage", "Search"), wiki.menuSeparator,
+        self:existentPageLink("IndexPage", "Index page"), wiki.menuSeparator,
+        self:existentPageLink("RecentChanges", "Recent changes"),
         wiki.menuEnd
     }
     return self:pageHeaderTable(title, actions, true)   
@@ -109,15 +163,37 @@ end
 function WikiFormatter.methods:standardPageHeader(title)
     local actions = HTK.P { 
         wiki.menuStart,
-        HTK.A { href = "EditPage?page=" .. title, "Edit" }, wiki.menuSeparator,
-        HTK.A { href = title .. "?view=printable" , "Printable" }, wiki.menuSeparator,
-        HTK.A { href = "SearchPage", "Search" }, wiki.menuSeparator,
-        HTK.A { href = "IndexPage", "Index page" }, wiki.menuSeparator,
-        HTK.A { href = "RecentChanges", "Recent changes" },
+        self:existentPageLink("EditPage?page=" .. title, "Edit"), wiki.menuSeparator,
+        self:existentPageLink(title .. "?view=printable" , "Printable"), wiki.menuSeparator,
+        self:existentPageLink("SearchPage", "Search"), wiki.menuSeparator,
+        self:existentPageLink("IndexPage", "Index page"), wiki.menuSeparator,
+        self:existentPageLink("RecentChanges", "Recent changes"),
         wiki.menuEnd
     }
     return self:pageHeaderTable(title, actions, false)    
 end
+
+---
+-- function for creating back link
+function WikiFormatter.methods:reversePageLink(theTopic)
+    return HTK.A { href = "ReverseLink?page=" .. theTopic, theTopic }
+end
+
+---
+-- function for creating regular link to other wiki page
+function WikiFormatter.methods:existentPageLink(theTopic, theText)
+    return HTK.A {class="twikiLink", href = theTopic, theText}
+end
+
+---
+-- function for creating link to non existend wiki page
+function WikiFormatter.methods:nonExistentPageLink(theTopic, theText)
+    return HTK.SPAN { class="twikiNewLink", style = "background : #FFFFCE;", 
+        HTK.FONT { color = "#0000FF", theText }, 
+        HTK.A {href = "EditPage?page=" .. theTopic, HTK.SUP {"?"} }
+    }
+end
+
 
 function WikiFormatter.methods:processTableLine(line)
     -- check if this is table definition
@@ -292,20 +368,6 @@ function WikiFormatter.methods:internalLink(theTopic, theAnchor, theText)
         return self:nonExistentPageLink(originalTopic, text)
     end
 end
-
-
-function WikiFormatter.methods:existentPageLink(theTopic, theText)
-    return HTK.A {class="twikiLink", href = theTopic, theText}
-end
-
-
-function WikiFormatter.methods:nonExistentPageLink(theTopic, theText)
-    return HTK.SPAN { class="twikiNewLink", style = "background : #FFFFCE;", 
-        HTK.FONT { color = "#0000FF", theText }, 
-        HTK.A {href = "EditPage?page=" .. theTopic, HTK.SUP {"?"} }
-    }
-end
-
 
 
 function WikiFormatter.methods:processUrl(urlType, urlAddress)
