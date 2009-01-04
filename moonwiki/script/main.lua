@@ -18,7 +18,7 @@ require("WikiExporter")
 function processRequest()
     local server = WikiEngine:new()   
     local response = server:handleRequest()
-    print("RESPONSE", response)
+    --print("RESPONSE", response)
     return response, string.len(response)         
 end
 

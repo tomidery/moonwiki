@@ -117,23 +117,7 @@ function WikiEngine.methods:getCSS()
   /* Default TWiki layout 
   @import url("layout.css"); */
   /* Default TWiki style */
-  @import url("style.css");
-  .twikiToc li {
-    list-style-image:url(/p/pub/TWiki/PatternSkin/i_arrow_down.gif);
-  }
-  .twikiWebIndicator {
-    background-color:#FFD8AA;
-  }
-/* Use this class for a div to put around menu links when you want to add images next to the links */
-  .twikiLinksWithImages {}
-  .twikiLinksWithImages a,
-  .twikiLinksWithImages ul li a {
-    display:inline;
-  }
-/* to indent only the second level */
-  .twikiIndentList ul li ul {
-    margin-left:0.75em;
-  }
+  @import url("style.css");  
 </style>
 ]]
 end
