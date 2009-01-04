@@ -2,8 +2,8 @@
 
 MINGW_HOME = C:/MinGW
 CC   = $(MINGW_HOME)/bin/mingw32-gcc.exe 
-LIBS =  -L$(MINGW_HOME)/lib -Llua-5.0/lib -lwsock32 -llua -llualib 
-INCS =  -I$(MINGW_HOME)/include  -Ilua-5.0/include
+LIBS =  -L$(MINGW_HOME)/lib -L../lua-5.0/lib -lwsock32 -llua -llualib 
+INCS =  -I$(MINGW_HOME)/include  -I../lua-5.0/include
 CFLAGS = -O2 $(INCS)
 
 
